@@ -7,9 +7,20 @@ const Gallery = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from('.gallery-header', {
-        scrollTrigger: { trigger: containerRef.current, start: 'top 80%' },
-        y: 20, opacity: 0, duration: 0.8, ease: 'power3.out'
+      let mm = gsap.matchMedia();
+
+      mm.add("(min-width: 768px)", () => {
+        gsap.from('.gallery-header', {
+          scrollTrigger: { trigger: containerRef.current, start: 'top 80%' },
+          y: 20, opacity: 0, duration: 0.8, ease: 'power3.out'
+        });
+      });
+
+      mm.add("(max-width: 767px)", () => {
+        gsap.from('.gallery-header', {
+          scrollTrigger: { trigger: containerRef.current, start: 'top 85%' },
+          y: 10, opacity: 0, duration: 0.6, ease: 'power3.out'
+        });
       });
     }, containerRef);
     return () => ctx.revert();
@@ -84,7 +95,7 @@ const Gallery = () => {
             gsap.to(window, { duration: 1.2, scrollTo: { y: '#benefits', offsetY: 80 }, ease: "power3.inOut" });
             window.history.pushState(null, '', '#benefits');
           }}
-          className="w-14 h-14 rounded-full bg-white shadow-md border border-blush flex items-center justify-center text-soft-pink hover:bg-soft-pink hover:text-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-bounce"
+          className="w-14 h-14 rounded-full bg-white shadow-md border border-blush flex items-center justify-center text-soft-pink hover:bg-soft-pink hover:text-white transition-colors duration-300 hover:shadow-xl hover:-translate-y-1 animate-bounce"
         >
           <ArrowDown size={24} />
         </a>

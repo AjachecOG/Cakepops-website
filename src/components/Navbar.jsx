@@ -97,10 +97,10 @@ const Navbar = () => {
             key={link.name}
             href={link.href}
             onClick={(e) => handleSmoothScroll(e, link.href)}
-            className={`text-sm font-medium tracking-wide transition-all duration-300 ${
+            className={`text-sm font-medium tracking-wide transition-colors duration-300 ${
               activeSection === link.href.substring(1) 
                 ? 'text-soft-pink' 
-                : 'text-deep-ink/70 hover:text-deep-ink hover:-translate-y-0.5'
+                : 'text-deep-ink/70 hover:text-deep-ink hover:-translate-y-0.5 transition-transform'
             }`}
           >
             {link.name}

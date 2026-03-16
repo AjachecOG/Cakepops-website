@@ -6,16 +6,33 @@ const About = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from('.about-element', {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 80%',
-        },
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: 'power3.out'
+      let mm = gsap.matchMedia();
+
+      mm.add("(min-width: 768px)", () => {
+        gsap.from('.about-element', {
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 80%',
+          },
+          y: 30,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out'
+        });
+      });
+
+      mm.add("(max-width: 767px)", () => {
+        gsap.from('.about-element', {
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 85%',
+          },
+          y: 15,
+          opacity: 0,
+          duration: 0.6,
+          ease: 'power3.out'
+        });
       });
     }, containerRef);
     return () => ctx.revert();

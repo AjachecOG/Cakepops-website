@@ -7,16 +7,32 @@ const Comparison = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Header reveal
-      gsap.from('.comparison-header', {
-        scrollTrigger: { trigger: containerRef.current, start: 'top 80%' },
-        y: 20, opacity: 0, duration: 0.8, ease: 'power3.out'
+      let mm = gsap.matchMedia();
+
+      mm.add("(min-width: 768px)", () => {
+        // Header reveal
+        gsap.from('.comparison-header', {
+          scrollTrigger: { trigger: containerRef.current, start: 'top 80%' },
+          y: 20, opacity: 0, duration: 0.8, ease: 'power3.out'
+        });
+
+        // Rows reveal
+        gsap.from('.comparison-row', {
+          scrollTrigger: { trigger: containerRef.current, start: 'top 70%' },
+          y: 40, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out'
+        });
       });
 
-      // Rows reveal
-      gsap.from('.comparison-row', {
-        scrollTrigger: { trigger: containerRef.current, start: 'top 70%' },
-        y: 40, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out'
+      mm.add("(max-width: 767px)", () => {
+        gsap.from('.comparison-header', {
+          scrollTrigger: { trigger: containerRef.current, start: 'top 85%' },
+          y: 10, opacity: 0, duration: 0.6, ease: 'power3.out'
+        });
+
+        gsap.from('.comparison-row', {
+          scrollTrigger: { trigger: containerRef.current, start: 'top 80%' },
+          y: 15, opacity: 0, duration: 0.6, ease: 'power3.out' // No stagger on mobile
+        });
       });
     }, containerRef);
     return () => ctx.revert();

@@ -7,16 +7,32 @@ const Benefits = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Header reveal
-      gsap.from('.benefits-header', {
-        scrollTrigger: { trigger: containerRef.current, start: 'top 80%' },
-        y: 20, opacity: 0, duration: 0.8, ease: 'power3.out'
+      let mm = gsap.matchMedia();
+
+      mm.add("(min-width: 768px)", () => {
+        // Header reveal
+        gsap.from('.benefits-header', {
+          scrollTrigger: { trigger: containerRef.current, start: 'top 80%' },
+          y: 20, opacity: 0, duration: 0.8, ease: 'power3.out'
+        });
+
+        // Cards stagger reveal
+        gsap.from('.benefit-card', {
+          scrollTrigger: { trigger: containerRef.current, start: 'top 70%' },
+          y: 30, opacity: 0, scale: 0.98, duration: 0.8, stagger: 0.15, ease: 'power3.out'
+        });
       });
 
-      // Cards stagger reveal
-      gsap.from('.benefit-card', {
-        scrollTrigger: { trigger: containerRef.current, start: 'top 70%' },
-        y: 30, opacity: 0, scale: 0.98, duration: 0.8, stagger: 0.15, ease: 'power3.out'
+      mm.add("(max-width: 767px)", () => {
+        gsap.from('.benefits-header', {
+          scrollTrigger: { trigger: containerRef.current, start: 'top 85%' },
+          y: 10, opacity: 0, duration: 0.6, ease: 'power3.out'
+        });
+
+        gsap.from('.benefit-card', {
+          scrollTrigger: { trigger: containerRef.current, start: 'top 80%' },
+          y: 15, opacity: 0, scale: 1, duration: 0.6, ease: 'power3.out' // No stagger on mobile
+        });
       });
     }, containerRef);
     return () => ctx.revert();

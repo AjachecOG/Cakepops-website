@@ -9,21 +9,40 @@ const Hero = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Staggered reveal for texts and buttons
-      gsap.from('.hero-element', {
-        y: 40,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: 'power3.out',
-        delay: 0.2
+      let mm = gsap.matchMedia();
+
+      mm.add("(min-width: 768px)", () => {
+        // Desktop: Staggered reveal
+        gsap.from('.hero-element', {
+          y: 40,
+          opacity: 0,
+          duration: 1,
+          stagger: 0.15,
+          ease: 'power3.out',
+          delay: 0.2
+        });
+        
+        gsap.fromTo('.hero-image', 
+          { scale: 1.05, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 1.5, ease: 'power2.out', delay: 0.5 }
+        );
       });
-      
-      // Soft image parallax effect on entrance
-      gsap.fromTo('.hero-image', 
-        { scale: 1.05, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1.5, ease: 'power2.out', delay: 0.5 }
-      );
+
+      mm.add("(max-width: 767px)", () => {
+        // Mobile: Simplified, no stagger, smaller y offset
+        gsap.from('.hero-element', {
+          y: 15,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          delay: 0.1
+        });
+        
+        gsap.fromTo('.hero-image', 
+          { scale: 1, opacity: 0 },
+          { opacity: 1, duration: 1, ease: 'power2.out', delay: 0.2 }
+        );
+      });
     }, containerRef);
     
     return () => ctx.revert();
@@ -66,14 +85,14 @@ const Hero = () => {
             <a 
               href="#contact" 
               onClick={(e) => handleSmoothScroll(e, '#contact')}
-              className="bg-deep-ink text-white px-8 py-4 rounded-full font-medium hover:bg-soft-pink transition-all duration-300 text-center shadow-lg hover:shadow-xl hover:-translate-y-1"
+              className="bg-deep-ink text-white px-8 py-4 rounded-full font-medium hover:bg-soft-pink transition-colors duration-300 text-center shadow-lg hover:shadow-xl hover:-translate-y-1"
             >
               Napisz do nas
             </a>
             <a 
               href="#gallery" 
               onClick={(e) => handleSmoothScroll(e, '#gallery')}
-              className="bg-white text-deep-ink border border-deep-ink/10 px-8 py-4 rounded-full font-medium hover:bg-cream hover:border-deep-ink/20 transition-all duration-300 text-center"
+              className="bg-white text-deep-ink border border-deep-ink/10 px-8 py-4 rounded-full font-medium hover:bg-cream hover:border-deep-ink/20 transition-colors duration-300 text-center"
             >
               Zobacz ofertę
             </a>
