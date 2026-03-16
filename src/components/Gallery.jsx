@@ -27,10 +27,9 @@ const Gallery = () => {
   }, []);
 
   const images = [
-    "/cakepop_1.png",
-    "/cakepop_2.png",
-    "/cakepop_3.png",
-    "/cakepop_4.png"
+    "/user_cakepop_1.png",
+    "/user_cakepop_2.png",
+    "/user_cakepop_3.png"
   ];
 
   const marqueeStyle = `

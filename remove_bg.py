@@ -11,20 +11,26 @@ except ImportError:
     import rembg
     from PIL import Image
 
-input_path = r"C:\Users\Adam\.gemini\antigravity\brain\13c66185-2ecb-4d14-a174-2e85a275a5c1\media__1773611610537.png"
-output_path = r"C:\Users\Adam\Desktop\Antigravity\website-builder\public\hero_cakepop.png"
+brain_dir = r"C:\Users\Adam\.gemini\antigravity\brain\58e3dcc9-7ce8-4628-a9ed-cd50e2540be7"
+output_dir = r"C:\Users\Adam\Desktop\Antigravity\website-builder\public"
 
-print("Removing background...")
-try:
-    with open(input_path, "rb") as i:
-        input_data = i.read()
+media_files = [
+    "media__1773690551049.jpg",
+    "media__1773690551649.png",
+    "media__1773690551656.jpg"
+]
 
-    output_data = rembg.remove(input_data)
+for i, filename in enumerate(media_files):
+    input_path = os.path.join(brain_dir, filename)
+    output_path = os.path.join(output_dir, f"user_cakepop_{i+1}.png")
+    print(f"Removing background for {filename}...")
+    try:
+        with open(input_path, "rb") as f:
+            input_data = f.read()
+        output_data = rembg.remove(input_data)
+        with open(output_path, "wb") as o:
+            o.write(output_data)
+        print(f"Saved {output_path}")
+    except Exception as e:
+        print(f"Error for {filename}: {e}")
 
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path, "wb") as o:
-        o.write(output_data)
-
-    print("Success!")
-except Exception as e:
-    print(f"Error: {e}")
