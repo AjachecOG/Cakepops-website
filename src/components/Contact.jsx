@@ -29,13 +29,39 @@ const Contact = () => {
   }, []);
 
   useEffect(() => {
-    if (isFormOpen && formRef.current) {
-      gsap.fromTo(formRef.current, 
-        { height: 0, opacity: 0 }, 
-        { height: 'auto', opacity: 1, duration: 0.6, ease: 'power3.out' }
-      );
+    if (formRef.current) {
+      if (isFormOpen) {
+        gsap.to(formRef.current, { height: 'auto', opacity: 1, duration: 0.6, ease: 'power3.out' });
+      } else {
+        gsap.to(formRef.current, { height: 0, opacity: 0, duration: 0.4, ease: 'power3.in' });
+      }
     }
   }, [isFormOpen]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const myForm = e.target;
+    const formData = new FormData(myForm);
+
+    // Wysłanie asynchroniczne zapobiega przeładowaniu i 404 przy lokalnym testowaniu.
+    // Działa natywnie z formularzami Netlify.
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData).toString(),
+    })
+      .then(() => {
+        window.history.pushState(null, '', '/dziekuje');
+        window.dispatchEvent(new Event('popstate'));
+        window.scrollTo(0,0);
+      })
+      .catch((error) => {
+        console.warn("Lokalny serwer Vite może nie obsługiwać POST. Przeniesienie:", error);
+        window.history.pushState(null, '', '/dziekuje');
+        window.dispatchEvent(new Event('popstate'));
+        window.scrollTo(0,0);
+      });
+  };
 
   const emailAddress = "biuro@cakepops.pl";
   const emailSubject = "Prośba o ofertę CAKEPOPS";
@@ -107,7 +133,8 @@ Pozdrawiam,
       {/* Rozsuwany formularz kontaktowy Netlify */}
       <div 
         ref={formRef} 
-        className={`max-w-2xl mx-auto overflow-hidden ${isFormOpen ? 'mt-8' : 'h-0'}`}
+        className="max-w-2xl mx-auto overflow-hidden mt-8"
+        style={{ height: 0, opacity: 0 }}
       >
         <div className="bg-white p-8 md:p-12 rounded-[2rem] shadow-md border border-warm-gray/10 relative">
           <h3 className="font-serif text-2xl font-semibold mb-6 text-deep-ink text-center">Wyślij nam wiadomość</h3>
@@ -115,8 +142,8 @@ Pozdrawiam,
           <form 
             name="kontakt-footer" 
             method="POST" 
-            action="/dziekuje" 
             data-netlify="true"
+            onSubmit={handleSubmit}
             className="flex flex-col gap-6"
           >
             <input type="hidden" name="form-name" value="kontakt-footer" />
@@ -155,6 +182,19 @@ Pozdrawiam,
                 className="w-full px-5 py-4 rounded-3xl bg-cream border border-transparent focus:border-soft-pink/50 focus:ring-2 focus:ring-soft-pink/20 outline-none transition-all resize-none"
                 placeholder="Napisz szczegóły swojego zapytania..."
               ></textarea>
+            </div>
+            
+            <div className="flex items-start gap-3 mt-2">
+              <input 
+                type="checkbox" 
+                id="rodo-consent" 
+                name="rodo-consent" 
+                required 
+                className="mt-1 w-4 h-4 rounded border-gray-300 text-soft-pink focus:ring-soft-pink"
+              />
+              <label htmlFor="rodo-consent" className="text-xs text-warm-gray leading-tight">
+                Wyrażam zgodę na przetwarzanie moich danych osobowych w celu udzielenia odpowiedzi na zapytanie. Rozumiem, że przysługuje mi prawo dostępu do moich danych, ich sprostowania, usunięcia lub ograniczenia przetwarzania. Szczegóły w <a href="/polityka-prywatnosci" className="text-soft-pink hover:underline">Polityce Prywatności</a>.
+              </label>
             </div>
             
             <button 
