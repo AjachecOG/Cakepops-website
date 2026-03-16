@@ -44,7 +44,7 @@ const Footer = () => {
       </div>
 
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-white/40 gap-4">
-        <span>&copy; {new Date().getFullYear()} CAKEPOPS.PL. Wszelkie prawa zastrzeżone.</span>
+        <span>&copy; {new Date().getFullYear()} Revela Sp. z o.o. Wszelkie prawa zastrzeżone.</span>
         <div className="flex items-center gap-6">
           <a href="/polityka-prywatnosci" className="hover:text-white transition-colors">Polityka prywatności (RODO)</a>
           <a href="/regulamin" className="hover:text-white transition-colors">Regulamin sklepu</a>
