@@ -15,20 +15,25 @@ const Navbar = () => {
       ScrollTrigger.create({
         start: 'top -50',
         end: 99999,
-        onUpdate: (self) => {
-          if (self.progress > 0 && navRef.current) {
+        onEnter: () => {
+          if (navRef.current) {
             gsap.to(navRef.current, {
               backgroundColor: 'rgba(255, 255, 255, 0.95)',
               borderColor: 'rgba(255, 255, 255, 0.4)',
               boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
               duration: 0.3,
+              overwrite: 'auto',
             });
-          } else if (navRef.current) {
+          }
+        },
+        onLeaveBack: () => {
+          if (navRef.current) {
             gsap.to(navRef.current, {
               backgroundColor: 'rgba(255, 255, 255, 0.2)',
               borderColor: 'rgba(255, 255, 255, 0.1)',
               boxShadow: 'none',
               duration: 0.3,
+              overwrite: 'auto',
             });
           }
         }

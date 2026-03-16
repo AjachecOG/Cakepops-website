@@ -15,4 +15,9 @@
   .noise-overlay {
     @apply pointer-events-none fixed inset-0 z-50 mix-blend-overlay opacity-20 bg-noise;
   }
+  
+  /* Hardware acceleration for GSAP animations */
+  .hero-element, .hero-image, .about-element, .comparison-header, .comparison-row, .gallery-header, .benefits-header, .benefit-card, .contact-element {
+    will-change: transform, opacity;
+  }
 }
